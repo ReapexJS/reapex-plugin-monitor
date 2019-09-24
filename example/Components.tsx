@@ -29,7 +29,8 @@ export const Counter = connect(mapStateToProps, mutations)(CounterComponent)
 
 
 tracker.track({
-  [actionTypes.decrease]: function* (action: ReturnType<typeof mutations.decrease>) {
+  [actionTypes.decrease]: function* (action: ReturnType<typeof mutations.decrease>, beforeState: any) {
+    console.log('beforeState: ', beforeState.toJS())
     const total = yield select(CounterModel.selectors.total)
     const [num] = action.payload
     return {
@@ -37,7 +38,8 @@ tracker.track({
       data: { total, num },
     }
   },
-  [actionTypes.increase]: function* (action: ReturnType<typeof mutations.increase>) {
+  [actionTypes.increase]: function* (action: ReturnType<typeof mutations.increase>, beforeState: any) {
+    console.log('beforeState: ', beforeState.toJS())
     const total = yield select(CounterModel.selectors.total)
     const [num] = action.payload
     return {

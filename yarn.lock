@@ -431,11 +431,6 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.2.tgz#0e58ae66773d7fd7c372a493aff740878ec9ceaa"
   integrity sha512-f8JzJNWVhKtc9dg/dyDNfliTKNOJSLa7Oht/ElZdF/UbMUmAH3rLmAk3ODNjw0mZajDEgatA03tRjB4+Dp/tzA==
 
-"@types/ramda@^0.25.48":
-  version "0.25.51"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.25.51.tgz#d5421d0e190c56c64c112a761a85782fc971409d"
-  integrity sha512-xcmtfHIgF9SYjhGdsZR1nQslxG4hu0cIpFfLQ4CWdw3KzHvl7ki1AzFLQUkbDTG42ZN3ZsQfdRzXRlkAvbIy5Q==
-
 "@types/react-dom@~16.8.4":
   version "16.8.5"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.8.5.tgz#3e3f4d99199391a7fb40aa3a155c8dd99b899cbd"
@@ -458,14 +453,6 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
-
-"@types/redux-immutable@^4.0.1":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@types/redux-immutable/-/redux-immutable-4.0.1.tgz#c9645af458cfcbf019b9e6b4185efcc842e3dac5"
-  integrity sha512-bksf7FrNMsoCy1Zn8F9zAYl5FCM6Qzt/Ln5C1knjdDUzczgtioy0Y01VPlm4aZacCr4nVrCsNyVdy36/4SMsKQ==
-  dependencies:
-    immutable "^4.0.0-rc.1"
-    redux "^4.0.0"
 
 "@types/reselect@^2.2.0":
   version "2.2.0"
@@ -2652,12 +2639,12 @@ ignore-walk@^3.0.1:
   dependencies:
     minimatch "^3.0.4"
 
-immutable-state-creator@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/immutable-state-creator/-/immutable-state-creator-1.1.0.tgz#e9e70e6221aba8afcae01ebdb8a505eb0dff9a50"
-  integrity sha512-ZUmAltChD+3+9qmMuP4BSjpC8LAh9ueiL7T047HjKfAZRb/gErLsEeki59p/g364DWiecnFaAfrC6DbGqmnwYw==
+immutable-state-creator@~1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/immutable-state-creator/-/immutable-state-creator-1.2.0.tgz#e856c48fc93fca7b39d99c61b71e0d95c148d739"
+  integrity sha512-EU18HxmraZY3fZZNiSNLi/9Scey6exuR4bDeSEYxznueDquESO78cegLlF31byri/Z5/svTPi7FNFrOzklUXUw==
 
-immutable@^4.0.0-rc.1, immutable@^4.0.0-rc.12:
+immutable@^4.0.0-rc.12:
   version "4.0.0-rc.12"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0-rc.12.tgz#ca59a7e4c19ae8d9bf74a97bdf0f6e2f2a5d0217"
   integrity sha512-0M2XxkZLx/mi3t8NVwIm1g8nHoEmM9p9UBl/G9k4+hm0kBgOVdMV/B3CY5dQ8qG8qc80NN4gDV4HQv6FTJ5q7A==
@@ -4728,11 +4715,6 @@ railroad-diagrams@^1.0.0:
   resolved "https://registry.yarnpkg.com/railroad-diagrams/-/railroad-diagrams-1.0.0.tgz#eb7e6267548ddedfb899c1b90e57374559cddb7e"
   integrity sha1-635iZ1SN3t+4mcG5Dlc3RVnN234=
 
-ramda@^0.26.0:
-  version "0.26.1"
-  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.26.1.tgz#8d41351eb8111c55353617fc3bbffad8e4d35d06"
-  integrity sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==
-
 randexp@0.4.6:
   version "0.4.6"
   resolved "https://registry.yarnpkg.com/randexp/-/randexp-0.4.6.tgz#e986ad5e5e31dae13ddd6f7b3019aa7c87f60ca3"
@@ -4889,15 +4871,12 @@ realpath-native@^1.1.0:
   dependencies:
     util.promisify "^1.0.0"
 
-reapex@0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/reapex/-/reapex-0.8.1.tgz#3d3599ded07d0012b374e48af5fad6f6fc691044"
-  integrity sha512-Za//vENVusmiZ6WZ1xLd2VEW07ofUCHNbkWorrX610cgc6TfIHV8Zg0pMIO4uFyosOvmTnbYzB0vrIIQgwqkeA==
+reapex@0.8.5:
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/reapex/-/reapex-0.8.5.tgz#506d2c2c1451344da15b5b17ad34442f5814c49b"
+  integrity sha512-8wtDGR2+m4rdkvWRGzK6hwt6sUgkWGtfTnQgu0O83O0yMFIezs3qpD6h52QEKvnzpC8qPmB+XhdLXgZuVfn2+Q==
   dependencies:
-    "@types/ramda" "^0.25.48"
-    "@types/redux-immutable" "^4.0.1"
-    immutable-state-creator "^1.1.0"
-    ramda "^0.26.0"
+    immutable-state-creator "~1.2.0"
     reducer-tools "^1.0.0"
     redux-immutable "^4.0.0"
 
@@ -4905,6 +4884,11 @@ reducer-tools@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/reducer-tools/-/reducer-tools-1.0.0.tgz#57a43861f8828b770278024516523ef4c74244c6"
   integrity sha512-aWRKn2TJQ99cYP2b4Vot9xRwmzuX9W2Y+2mEExm5PqJR/H55vOXsr1id8LwUdmnT7a6NPNpe/dgiNKUBCFPRkw==
+
+redux-devtools-extension@^2.13.8:
+  version "2.13.8"
+  resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.8.tgz#37b982688626e5e4993ff87220c9bbb7cd2d96e1"
+  integrity sha512-8qlpooP2QqPtZHQZRhx3x3OP5skEV1py/zUdMY28WNAocbafxdG2tRD1MWE7sp8obGMNYuLWanhhQ7EQvT1FBg==
 
 redux-immutable@^4.0.0:
   version "4.0.0"

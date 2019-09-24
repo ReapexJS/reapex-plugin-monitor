@@ -1,5 +1,5 @@
 import { Action, App } from 'reapex'
-import { call, spawn, take } from 'redux-saga/effects';
+import { call, spawn, take, select } from 'redux-saga/effects';
 
 export interface PluginConfig {
   trackFunc: Function
@@ -10,8 +10,8 @@ const plugin = (app: App, config: PluginConfig) => {
   const bufferedData: any[] = []
   const trackingMap: Record<string, any> = {}
 
-  function* handleAction(action: Action<string, any>) {
-    const trackData = yield call(trackingMap[action.type], action)
+  function* handleAction(action: Action<string, any>, beforeState: any) {
+    const trackData = yield call(trackingMap[action.type], action, beforeState)
     bufferedData.push(trackData)
   }
 
@@ -24,9 +24,10 @@ const plugin = (app: App, config: PluginConfig) => {
 
   function* watcher() {
     while(true) {
+      const beforeState = yield select();
       const action: Action<string, any> = yield take('*')
       if (trackingMap[action.type]) {
-        yield spawn(handleAction, action)
+        yield spawn(handleAction, action, beforeState)
       }
     }
   }
