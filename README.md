@@ -1,15 +1,16 @@
 ### Reapex action monitoring plugin
 
 ```
+import monitorPlugin from 'reapex-plugin-monitoring'
 const app = new App()
 
 function doTrack(data: any[]) {
   console.log(data)
 }
 
-const tracker = app.plugin(trackPlugin, {trackFunc: doTrack, interval: 5000})
+const monitor = app.plugin(monitorPlugin, {trackFunc: doTrack, interval: 5000})
 
-tracker.track({
+monitor.track({
   [actionTypes.decrease]: function* (action: ReturnType<typeof mutations.decrease>, beforeState, afterState) {
     const total = CounterModel.selectors.total(afterState)
     const [num] = action.payload
