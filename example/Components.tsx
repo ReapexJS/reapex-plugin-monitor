@@ -4,7 +4,6 @@ import app, {tracker} from './app'
 import React from 'react'
 import {connect} from 'react-redux';
 import {createStructuredSelector} from 'reselect'
-import { select } from 'redux-saga/effects'
 
 const CounterModel = app.model('Counter', { total: 0 })
 
@@ -29,20 +28,20 @@ export const Counter = connect(mapStateToProps, mutations)(CounterComponent)
 
 
 tracker.track({
-  [actionTypes.decrease]: function* (action: ReturnType<typeof mutations.decrease>, beforeState: any, afterState: any) {
+  [actionTypes.decrease]: function(action: ReturnType<typeof mutations.decrease>, beforeState: any, afterState: any) {
     console.log('beforeState: ', beforeState.toJS())
     console.log('afterState: ', afterState.toJS())
-    const total = yield select(CounterModel.selectors.total)
+    const total = CounterModel.selectors.total(afterState)
     const [num] = action.payload
     return {
       key: actionTypes.decrease,
       data: { total, num },
     }
   },
-  [actionTypes.increase]: function* (action: ReturnType<typeof mutations.increase>, beforeState: any, afterState: any) {
+  [actionTypes.increase]: function(action: ReturnType<typeof mutations.increase>, beforeState: any, afterState: any) {
     console.log('beforeState: ', beforeState.toJS())
     console.log('afterState: ', afterState.toJS())
-    const total = yield select(CounterModel.selectors.total)
+    const total = CounterModel.selectors.total(afterState)
     const [num] = action.payload
     return {
       key: actionTypes.increase,
