@@ -1,5 +1,5 @@
 {
-  "name": "reapex-plugin-tracking",
+  "name": "reapex-plugin-monitoring",
   "version": "1.0.0",
   "description": "reapex tracking plugin",
   "main": "lib/index.js",
