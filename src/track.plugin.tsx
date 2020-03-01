@@ -1,4 +1,4 @@
-import { Action, App } from 'reapex'
+import { Action, App, GlobalState } from 'reapex'
 import { all, call, select, spawn, take } from 'redux-saga/effects'
 
 export interface PluginConfig {
@@ -6,41 +6,68 @@ export interface PluginConfig {
   interval?: number
 }
 
-export type ModifierData = {
+export type Data = {
   [key: string]: any
 }
 
-type Modifier = (...args: any[]) => ModifierData
+type Modifier = (
+  data: Data,
+  beforeState: GlobalState,
+  afterState: GlobalState
+) => Data
+type MonitorFunc = (
+  action: Action<string, any>,
+  beforeState: GlobalState,
+  afterState: GlobalState
+) => Data
 
 const plugin = (app: App, config: PluginConfig) => {
-  const bufferedData: any[] = []
-  const trackingMap: Record<string, any> = {}
+  const bufferedData: Data[] = []
+  const monitorMap: Record<string, MonitorFunc> = {}
   // The global data modifier which applied to every monitor data
   const dataModifiers: Modifier[] = []
 
-  function* handleAction(action: Action<string, any>, beforeState: any, afterState: any) {
-    let trackData = yield call(trackingMap[action.type], action, beforeState, afterState)
-    const modifiersData: ModifierData[] = yield all(dataModifiers.map(modifier => call(modifier, trackData)))
+  function* handleAction(
+    action: Action<string, any>,
+    beforeState: GlobalState,
+    afterState: GlobalState
+  ) {
+    let trackData: Data = yield call(
+      monitorMap[action.type],
+      action,
+      beforeState,
+      afterState
+    )
+
+    const modifiersData: Data[] = yield all(
+      dataModifiers.map(modifier =>
+        call(modifier, trackData, beforeState, afterState)
+      )
+    )
     // merge with modifiers data
     modifiersData.forEach(data => {
-      trackData = {...trackData, ...data}
+      trackData = { ...trackData, ...data }
     })
+
     bufferedData.push(trackData)
   }
 
-  setInterval(() => {
-    if (bufferedData.length > 0) {
-      config.trackFunc([...bufferedData])
-      bufferedData.length = 0
-    }
-  }, config.interval === undefined ? 3000 : config.interval)
+  setInterval(
+    () => {
+      if (bufferedData.length > 0) {
+        config.trackFunc([...bufferedData])
+        bufferedData.length = 0
+      }
+    },
+    config.interval === undefined ? 3000 : config.interval
+  )
 
   function* watcher() {
-    while(true) {
+    while (true) {
       const beforeState = yield select()
       const action: Action<string, any> = yield take('*')
       const afterState = yield select()
-      if (trackingMap[action.type]) {
+      if (monitorMap[action.type]) {
         yield spawn(handleAction, action, beforeState, afterState)
       }
     }
@@ -55,9 +82,9 @@ const plugin = (app: App, config: PluginConfig) => {
   app.runSaga(watcher)
 
   return {
-    track: (newTrackingMap: Record<string, any>) => {
+    track: (newTrackingMap: Record<string, MonitorFunc>) => {
       Object.keys(newTrackingMap).forEach(key => {
-        trackingMap[key] = newTrackingMap[key]
+        monitorMap[key] = newTrackingMap[key]
       })
     },
     trackData: (trackData: any) => {
@@ -65,7 +92,6 @@ const plugin = (app: App, config: PluginConfig) => {
     },
     applyDataModifier,
   }
-
 }
 
 export default plugin
