@@ -1,17 +1,30 @@
 import { Action, App } from 'reapex'
-import { call, select, spawn, take } from 'redux-saga/effects'
+import { all, call, select, spawn, take } from 'redux-saga/effects'
 
 export interface PluginConfig {
   trackFunc: Function
   interval?: number
 }
 
+export type ModifierData = {
+  [key: string]: any
+}
+
+type Modifier = (...args: any[]) => ModifierData
+
 const plugin = (app: App, config: PluginConfig) => {
   const bufferedData: any[] = []
   const trackingMap: Record<string, any> = {}
+  // The global data modifier which applied to every monitor data
+  const dataModifiers: Modifier[] = []
 
   function* handleAction(action: Action<string, any>, beforeState: any, afterState: any) {
-    const trackData = yield call(trackingMap[action.type], action, beforeState, afterState)
+    let trackData = yield call(trackingMap[action.type], action, beforeState, afterState)
+    const modifiersData: ModifierData[] = yield all(dataModifiers.map(modifier => call(modifier, trackData)))
+    // merge with modifiers data
+    modifiersData.forEach(data => {
+      trackData = {...trackData, ...data}
+    })
     bufferedData.push(trackData)
   }
 
@@ -33,6 +46,12 @@ const plugin = (app: App, config: PluginConfig) => {
     }
   }
 
+  function applyDataModifier(modifier: Modifier) {
+    if (!dataModifiers.includes(modifier)) {
+      dataModifiers.push(modifier)
+    }
+  }
+
   app.runSaga(watcher)
 
   return {
@@ -44,6 +63,7 @@ const plugin = (app: App, config: PluginConfig) => {
     trackData: (trackData: any) => {
       bufferedData.push(trackData)
     },
+    applyDataModifier,
   }
 
 }
