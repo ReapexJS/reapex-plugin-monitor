@@ -1,7 +1,7 @@
 ### Reapex action monitoring module
 
 ```typescript
-import monitorModule from 'reapex-module-monitoring'
+import monitorModule from 'reapex-module-monitor'
 const app = new App()
 
 function doTrack(data: any[]) {
