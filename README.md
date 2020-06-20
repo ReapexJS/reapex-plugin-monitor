@@ -1,6 +1,6 @@
 ### Reapex action monitoring module
 
-```
+```typescript
 import monitorModule from 'reapex-module-monitoring'
 const app = new App()
 
