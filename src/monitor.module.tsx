@@ -1,7 +1,7 @@
 import { Action, App, GlobalState } from 'reapex'
 import { all, call, select, spawn, take } from 'redux-saga/effects'
 
-export interface PluginConfig {
+export interface ModuleConfig {
   trackFunc: Function
   interval?: number
 }
@@ -21,7 +21,7 @@ type MonitorFunc = (
   afterState: GlobalState
 ) => Data
 
-const plugin = (app: App, config: PluginConfig) => {
+const monitorModule = (app: App, config: ModuleConfig) => {
   const bufferedData: Data[] = []
   const monitorMap: Record<string, MonitorFunc> = {}
   // The global data modifier which applied to every monitor data
@@ -94,4 +94,4 @@ const plugin = (app: App, config: PluginConfig) => {
   }
 }
 
-export default plugin
+export default monitorModule

@@ -1,7 +1,7 @@
 {
-  "name": "reapex-plugin-monitoring",
+  "name": "reapex-module-monitoring",
   "version": "1.1.0",
-  "description": "reapex tracking plugin",
+  "description": "reapex redux action tracking module",
   "main": "lib/index.js",
   "scripts": {
     "test": "jest",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ruanyl/reapex-plugin-tracking.git"
+    "url": "git+https://github.com/ruanyl/reapex-module-tracking.git"
   },
   "keywords": [
     "reapex",
@@ -63,7 +63,7 @@
   "author": "Yulong Ruan <ruanyu1@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ReapexJS/reapex-plugin-tracking/issues"
+    "url": "https://github.com/ReapexJS/reapex-module-tracking/issues"
   },
-  "homepage": "https://github.com/ReapexJS/reapex-plugin-tracking#readme"
+  "homepage": "https://github.com/ReapexJS/reapex-module-tracking#readme"
 }

@@ -1,3 +1,3 @@
-import trackPlugin from './track.plugin'
+import monitor from './monitor.module'
 
-export default trackPlugin
+export default monitor

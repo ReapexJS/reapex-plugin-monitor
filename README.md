@@ -1,14 +1,14 @@
-### Reapex action monitoring plugin
+### Reapex action monitoring module
 
 ```
-import monitorPlugin from 'reapex-plugin-monitoring'
+import monitorModule from 'reapex-module-monitoring'
 const app = new App()
 
 function doTrack(data: any[]) {
   console.log(data)
 }
 
-const monitor = app.plugin(monitorPlugin, {trackFunc: doTrack, interval: 5000})
+const monitor = app.use(monitorModule, {trackFunc: doTrack, interval: 5000})
 
 monitor.track({
   [actionTypes.decrease]: function* (action: ReturnType<typeof mutations.decrease>, beforeState, afterState) {
