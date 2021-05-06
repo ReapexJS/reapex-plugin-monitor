@@ -7,9 +7,10 @@ function doTrack(data: any[]) {
   console.log(data)
 }
 
+export const store = app.createStore()
+
 export const tracker = app.use(monitorModule, {
   trackFunc: doTrack,
-  interval: 5000,
 })
 
 export default app

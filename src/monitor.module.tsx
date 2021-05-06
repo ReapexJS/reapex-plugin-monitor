@@ -1,5 +1,5 @@
-import { Action, App, GlobalState } from 'reapex'
-import { all, call, select, spawn, take } from 'redux-saga/effects'
+import { Action, App, GlobalState, Saga } from 'reapex'
+import { all, call, spawn, take } from 'redux-saga/effects'
 
 export interface ModuleConfig {
   trackFunc: Function
@@ -21,6 +21,8 @@ type MonitorFunc = (
   afterState: GlobalState
 ) => Data
 
+let intervalId = 0
+
 const monitorModule = (app: App, config: ModuleConfig) => {
   const bufferedData: Data[] = []
   const monitorMap: Record<string, MonitorFunc> = {}
@@ -40,33 +42,37 @@ const monitorModule = (app: App, config: ModuleConfig) => {
     )
 
     const modifiersData: Data[] = yield all(
-      dataModifiers.map(modifier =>
+      dataModifiers.map((modifier) =>
         call(modifier, trackData, beforeState, afterState)
       )
     )
     // merge with modifiers data
-    modifiersData.forEach(data => {
+    modifiersData.forEach((data) => {
       trackData = { ...trackData, ...data }
     })
 
-    bufferedData.push(trackData)
+    if (!config.interval) {
+      config.trackFunc([trackData])
+    } else {
+      bufferedData.push(trackData)
+    }
   }
 
-  setInterval(
-    () => {
+  if (config.interval) {
+    window.clearInterval(intervalId)
+    intervalId = window.setInterval(() => {
       if (bufferedData.length > 0) {
         config.trackFunc([...bufferedData])
         bufferedData.length = 0
       }
-    },
-    config.interval === undefined ? 3000 : config.interval
-  )
+    }, config.interval)
+  }
 
   function* watcher() {
     while (true) {
-      const beforeState = yield select()
+      const beforeState = app.store.getState()
       const action: Action<string, any> = yield take('*')
-      const afterState = yield select()
+      const afterState = app.store.getState()
       if (monitorMap[action.type]) {
         yield spawn(handleAction, action, beforeState, afterState)
       }
@@ -79,16 +85,20 @@ const monitorModule = (app: App, config: ModuleConfig) => {
     }
   }
 
-  app.runSaga(watcher)
+  app.runSaga(watcher as Saga)
 
   return {
     track: (newTrackingMap: Record<string, MonitorFunc>) => {
-      Object.keys(newTrackingMap).forEach(key => {
+      Object.keys(newTrackingMap).forEach((key) => {
         monitorMap[key] = newTrackingMap[key]
       })
     },
     trackData: (trackData: any) => {
-      bufferedData.push(trackData)
+      if (!config.interval) {
+        config.trackFunc([trackData])
+      } else {
+        bufferedData.push(trackData)
+      }
     },
     applyDataModifier,
   }
