@@ -1,6 +1,6 @@
 {
   "name": "reapex-module-monitor",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "reapex redux action tracking module",
   "main": "lib/index.js",
   "scripts": {
