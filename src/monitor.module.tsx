@@ -15,11 +15,12 @@ type Modifier = (
   beforeState: GlobalState,
   afterState: GlobalState
 ) => Data
+
 type MonitorFunc = (
-  action: Action<string, any>,
+  action: Action<any, any>,
   beforeState: GlobalState,
   afterState: GlobalState
-) => Data
+) => Data | null
 
 let intervalId = 0
 
@@ -34,27 +35,29 @@ const monitorModule = (app: App, config: ModuleConfig) => {
     beforeState: GlobalState,
     afterState: GlobalState
   ) {
-    let trackData: Data = yield call(
+    let trackData: Data | null = yield call(
       monitorMap[action.type],
       action,
       beforeState,
       afterState
     )
 
-    const modifiersData: Data[] = yield all(
-      dataModifiers.map((modifier) =>
-        call(modifier, trackData, beforeState, afterState)
+    if (trackData) {
+      const modifiersData: Data[] = yield all(
+        dataModifiers.map((modifier) =>
+          call(modifier, trackData!, beforeState, afterState)
+        )
       )
-    )
-    // merge with modifiers data
-    modifiersData.forEach((data) => {
-      trackData = { ...trackData, ...data }
-    })
+      // merge with modifiers data
+      modifiersData.forEach((data) => {
+        trackData = { ...trackData, ...data }
+      })
 
-    if (!config.interval) {
-      config.trackFunc([trackData])
-    } else {
-      bufferedData.push(trackData)
+      if (!config.interval) {
+        config.trackFunc([trackData])
+      } else {
+        bufferedData.push(trackData)
+      }
     }
   }
 
